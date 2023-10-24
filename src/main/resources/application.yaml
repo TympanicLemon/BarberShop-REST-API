@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    username: barber_shops
+    password: barber_shops
+    url: jdbc:mysql://localhost:3306/barber_shops
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
