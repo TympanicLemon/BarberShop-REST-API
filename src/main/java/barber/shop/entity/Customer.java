@@ -22,6 +22,6 @@ public class Customer {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @ManyToMany(mappedBy = "customers")
+  @ManyToMany(mappedBy = "customers", cascade = CascadeType.ALL)
   private Set<BarberShop> barberShops = new HashSet<>();
 }
