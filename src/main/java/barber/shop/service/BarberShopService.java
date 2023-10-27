@@ -2,8 +2,8 @@ package barber.shop.service;
 
 import barber.shop.controller.model.BarberShopData;
 import barber.shop.controller.model.CustomerData;
+import barber.shop.controller.model.EmployeeData;
 import barber.shop.dao.BarberShopDao;
-import barber.shop.dao.CustomerDao;
 import barber.shop.entity.BarberShop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class BarberShopService {
   @Autowired
   private BarberShopDao barberShopDao;
 
-  // Save or updatea a barber shop
+  // Save or update a barber shop
   @Transactional
   public BarberShopData saveBarberShop(BarberShopData barberShopData) {
     Long barberShopId = barberShopData.getBarberShopId();
@@ -57,13 +57,13 @@ public class BarberShopService {
 
   // Get all barber shops
   @Transactional(readOnly = true)
-  public List<BarberShopData> retrieveAllBarberShops() {
+  public List<BarberShopData> getAllBarberShops() {
     return barberShopDao.findAll().stream().map(BarberShopData::new).toList();
   }
 
   // Get one barber shop
   @Transactional(readOnly = true)
-  public BarberShopData retrieveBarberShopById(Long barberShopId) {
+  public BarberShopData getBarberShopById(Long barberShopId) {
     BarberShop barberShop = findBarberShopById(barberShopId);
 
     return new BarberShopData(barberShop);
@@ -78,9 +78,16 @@ public class BarberShopService {
 
   // Get all customers from one shop
   @Transactional
-  public List<CustomerData> retrieveCustomersByShopId(Long barberShopId) {
+  public List<CustomerData> getAllCustomersByShopId(Long barberShopId) {
     BarberShop barberShop = findBarberShopById(barberShopId);
 
     return barberShop.getCustomers().stream().map(CustomerData::new).collect(Collectors.toList());
+  }
+
+  @Transactional
+  public List<EmployeeData> getAllEmployeesByShopId(Long barberShopId) {
+    BarberShop barberShop = findBarberShopById(barberShopId);
+
+    return barberShop.getEmployees().stream().map(EmployeeData::new).collect(Collectors.toList());
   }
 }

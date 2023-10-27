@@ -10,7 +10,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -39,36 +39,19 @@ public class CustomerService {
   }
 
   @Transactional
-  public CustomerData updateCustomer(Long barberShopId, Long customerId, CustomerData customerData) {
-    BarberShop barberShop = findBarberShopById(barberShopId);
+  public CustomerData updateCustomer(Long customerId, CustomerData customerData) {
     Customer customer = findCustomerById(customerId);
 
     if(!customer.getEmail().equals(customerData.getEmail())) {
-      Optional<Customer> duplicateCustomer = customerDao.findByEmail(customerData.getEmail());
-      if(duplicateCustomer.isPresent()) {
+      Optional<Customer> optCust = customerDao.findByEmail(customerData.getEmail());
+      if(optCust.isPresent()) {
         throw new DuplicateKeyException("Customer with email " + customerData.getEmail() + " already exists");
       }
     }
 
     setFieldsInCustomer(customer, customerData);
 
-    addCustomerToBarberShop(barberShop, customer);
-
     return new CustomerData(customerDao.save(customer));
-  }
-
-  private void addCustomerToBarberShop(BarberShop barberShop, Customer customer) {
-    boolean isAssociated = false;
-    for (BarberShop associatedShop : customer.getBarberShops()) {
-      if (associatedShop.getBarberShopId().equals(barberShop.getBarberShopId())) {
-        isAssociated = true;
-        break;
-      }
-    }
-
-    if (!isAssociated) {
-      customer.getBarberShops().add(barberShop);
-    }
   }
 
   private void setFieldsInCustomer(Customer customer, CustomerData customerData) {
@@ -104,6 +87,10 @@ public class CustomerService {
     customer.getBarberShops().clear();
 
     customerDao.delete(customer);
+  }
+
+  public List<CustomerData> getAllCustomers() {
+    return customerDao.findAll().stream().map(CustomerData::new).toList();
   }
 }
 

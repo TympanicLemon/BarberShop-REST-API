@@ -2,6 +2,7 @@ package barber.shop.controller;
 
 import barber.shop.controller.model.BarberShopData;
 import barber.shop.controller.model.CustomerData;
+import barber.shop.controller.model.EmployeeData;
 import barber.shop.service.BarberShopService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,21 +31,28 @@ public class BarberShopController {
   @GetMapping
   public List<BarberShopData> retrieveAllBarberShops() {
     log.info("Retrieving all available barber shops.");
-    return barberShopService.retrieveAllBarberShops();
+    return barberShopService.getAllBarberShops();
   }
 
   // Read
   @GetMapping("/{barberShopId}")
   public BarberShopData retrieveBarberShopById(@PathVariable Long barberShopId) {
     log.info("Retrieving barbershop with ID={}", barberShopId);
-    return barberShopService.retrieveBarberShopById(barberShopId);
+    return barberShopService.getBarberShopById(barberShopId);
   }
 
   // Get all customers for a particular store
   @GetMapping("/{barberShopId}/customers")
   public List<CustomerData> retrieveCustomersByShopId(@PathVariable Long barberShopId) {
     log.info("Retrieving all customers in barber shop with ID={}", barberShopId);
-    return barberShopService.retrieveCustomersByShopId(barberShopId);
+    return barberShopService.getAllCustomersByShopId(barberShopId);
+  }
+
+  // Get all employees for a particular store
+  @GetMapping("/{barberShopId}/employees")
+  public List<EmployeeData> getAllEmployeesByShopId(@PathVariable Long barberShopId) {
+    log.info("Fetching all employees in barber shop with ID={}", barberShopId);
+    return barberShopService.getAllEmployeesByShopId(barberShopId);
   }
 
   // Update

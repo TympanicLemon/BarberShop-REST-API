@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,14 +30,20 @@ public class CustomerController {
     return customerService.getCustomer(customerId);
   }
 
-  @PutMapping("/{barberShopId}/{customerId}")
-  public CustomerData updateCustomer(@RequestBody CustomerData customerData, @PathVariable Long customerId, @PathVariable Long barberShopId) {
-    customerData.setCustomerId(customerId);
-    log.info("Updating customer with ID={}", customerId);
-    return customerService.updateCustomer(barberShopId, customerId, customerData);
+  @GetMapping
+  public List<CustomerData> getAllCustomers() {
+    log.info("Retrieving all customers from all stores");
+    return customerService.getAllCustomers();
   }
 
-  @DeleteMapping("/{customerId}")
+  @PutMapping("/{customerId}")
+  public CustomerData updateCustomer(@RequestBody CustomerData customerData, @PathVariable Long customerId) {
+    customerData.setCustomerId(customerId);
+    log.info("Updating customer with ID={}", customerId);
+    return customerService.updateCustomer(customerId, customerData);
+  }
+
+  @DeleteMapping("{customerId}")
   public Map<String, String> deleteCustomer(@PathVariable Long customerId) {
     log.info("Deleting customer with ID={}", customerId);
     customerService.deleteCustomer(customerId);
