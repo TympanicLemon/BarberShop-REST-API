@@ -2,7 +2,8 @@
 
 A RESTful API built with **Spring Boot** that models a barbershop database system. The system encapsulates the details of barbershop chains, their respective employees, and the customers visiting them.
 
-## 📋 Tables:
+<details>
+<summary><strong>📋 Database Structure Overview</strong></summary>
 
 ### 1. **Barbershop**
    - 🔑 Barbershop ID (Primary Key)
@@ -30,23 +31,24 @@ A RESTful API built with **Spring Boot** that models a barbershop database syste
    - 🏢 Barbershop ID (Foreign Key)
    - 👤 Customer ID (Foreign Key)
 
-## 💼 Relationships:
+</details>
+
+<details>
+<summary><strong>💼 Relationships</strong></summary>
 
 ### 1. **Barbershop**
-   - 🔗 **One-to-Many** with Barber
-   - 🔗 **Many-to-Many** with Customers (via `Barbershop_Customer`)
+- 🔗 **One-to-Many** with Barber
+- 🔗 **Many-to-Many** with Customers (via `Barbershop_Customer`)
 
 ### 2. **Barber**
-   - 🔗 **Many-to-One** with Barbershop
+- 🔗 **Many-to-One** with Barbershop
 
 ### 3. **Customer**
-   - 🔗 **Many-to-Many** with Barbershop (via `Barbershop_Customer`)
+- 🔗 **Many-to-Many** with Barbershop (via `Barbershop_Customer`)
 
-## ✨ Overview
+</details>
 
 The **Barbershop Management System** provides a robust solution for managing multiple facets of a barbershop chain. This includes individual shop details, the skilled barbers working at each location, and the diverse range of customers frequenting them.
-
-## 🚀 Features:
 
 - Retrieve the entire list of barbershops.
 - Access detailed information of a specific store.
@@ -58,12 +60,12 @@ The **Barbershop Management System** provides a robust solution for managing mul
 - Delete a barbershop record, consequently removing all its associated employees.
 - Remove a customer or employee record.
 
-## 🎯 Stretch Goals:
+🎯 Stretch Goals
+- [x] Redo README
+- [ ] Rewrite API structure, should be easier to read will follow microsoft convention for a REST API
+- [ ] TBD...
 
-- **Service Catalog**: Integrate a service management system where each barber can offer specific services.
-- **Appointment System**: Introduce a robust appointment system.
-- **Granular Control**: Detailed analytics on customer visits, revenue, etc.
-- **Feedback System**: Allow customers to leave feedback.
-- **Loyalty Program Integration**: Implement a customer loyalty program.
-- **Digital Payment Integration**: Provide a digital payment experience.
+
+
+
 
