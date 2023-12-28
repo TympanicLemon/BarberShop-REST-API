@@ -6,9 +6,6 @@ import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * DTO class for the BarberShop entity.
- */
 @Data
 @NoArgsConstructor
 public class BarberShopData {

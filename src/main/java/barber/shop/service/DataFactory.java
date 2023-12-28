@@ -12,10 +12,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * This class is responsible for converting entities into DTOs (Data Transfer Objects)
- * for the BarberShop application.
- */
 @Service
 public class DataFactory {
 

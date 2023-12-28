@@ -3,9 +3,6 @@ package barber.shop.controller.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO class for the Customer Entity
- */
 @Data
 @NoArgsConstructor
 public class CustomerData {
