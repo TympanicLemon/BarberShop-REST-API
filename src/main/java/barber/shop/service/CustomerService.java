@@ -49,13 +49,13 @@ public class CustomerService {
             }
         }
 
-        updateFieldsForCustomer(customer, customerData);
+        updateCustomerDataFields(customer, customerData);
         dataFactory.convertToCustomer(customerData);
 
         return dataFactory.convertToCustomerData(customerDao.save(customer));
     }
 
-    private void updateFieldsForCustomer(Customer customer, CustomerData customerData) {
+    private void updateCustomerDataFields(Customer customer, CustomerData customerData) {
         customer.setFirstName(customerData.getFirstName());
         customer.setLastName(customerData.getLastName());
         customer.setEmail(customerData.getEmail());
