@@ -24,28 +24,29 @@ public class BarberShopController {
   @ResponseStatus(HttpStatus.CREATED)
   public BarberShopData insertBarberShop(@RequestBody BarberShopData barberShopData) {
     log.info("Creating barber shop {}", barberShopData);
-    return barberShopService.saveBarberShop(barberShopData);
+    return barberShopService.createBarberShop(barberShopData);
   }
 
-  // Read all
-  @GetMapping
-  public List<BarberShopData> retrieveAllBarberShops() {
-    log.info("Retrieving all available barber shops.");
-    return barberShopService.getAllBarberShops();
+  // Update
+  @PutMapping("/{barberShopId}")
+  public BarberShopData updateBarberShop(@PathVariable Long barberShopId, @RequestBody BarberShopData barberShopData) {
+    barberShopData.setBarberShopId(barberShopId);
+    log.info("Updating barber shop with ID={}", barberShopId);
+    return barberShopService.createBarberShop(barberShopData);
   }
 
-  // Read
+  // Get
   @GetMapping("/{barberShopId}")
   public BarberShopData retrieveBarberShopById(@PathVariable Long barberShopId) {
     log.info("Retrieving barbershop with ID={}", barberShopId);
     return barberShopService.getBarberShopById(barberShopId);
   }
 
-  // Get all customers for a particular store
-  @GetMapping("/{barberShopId}/customers")
-  public List<CustomerData> retrieveCustomersByShopId(@PathVariable Long barberShopId) {
-    log.info("Retrieving all customers in barber shop with ID={}", barberShopId);
-    return barberShopService.getAllCustomersByShopId(barberShopId);
+  // Get all
+  @GetMapping
+  public List<BarberShopData> retrieveAllBarberShops() {
+    log.info("Retrieving all available barber shops.");
+    return barberShopService.getAllBarberShops();
   }
 
   // Get all employees for a particular store
@@ -55,12 +56,11 @@ public class BarberShopController {
     return barberShopService.getAllEmployeesByShopId(barberShopId);
   }
 
-  // Update
-  @PutMapping("/{barberShopId}")
-  public BarberShopData updateBarberShop(@PathVariable Long barberShopId, @RequestBody BarberShopData barberShopData) {
-    barberShopData.setBarberShopId(barberShopId);
-    log.info("Updating barber shop with ID={}", barberShopId);
-    return barberShopService.saveBarberShop(barberShopData);
+  // Get all customers for a particular store
+  @GetMapping("/{barberShopId}/customers")
+  public List<CustomerData> retrieveCustomersByShopId(@PathVariable Long barberShopId) {
+    log.info("Retrieving all customers in barber shop with ID={}", barberShopId);
+    return barberShopService.getAllCustomersByShopId(barberShopId);
   }
 
   // Delete
