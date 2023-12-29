@@ -25,6 +25,7 @@ public class CustomerService {
     @Autowired
     private DataFactory dataFactory;
 
+    // Create
     @Transactional
     public CustomerData createCustomer(Long barberShopId, CustomerData customerData) {
         customerDao.findByEmail(customerData.getEmail()).ifPresent(c -> {
@@ -34,10 +35,12 @@ public class CustomerService {
         BarberShop barberShop = findBarberShopById(barberShopId);
         Customer customer = dataFactory.convertToCustomer(customerData);
         barberShop.getCustomers().add(customer);
+        customer.getBarberShops().add(barberShop);
 
         return dataFactory.convertToCustomerData(customerDao.save(customer));
     }
 
+    // Update
     @Transactional
     public CustomerData updateCustomer(Long customerId, CustomerData customerData) {
         Customer customer = findCustomerById(customerId);
@@ -71,12 +74,20 @@ public class CustomerService {
                 "Barbershop with ID=" + barberShopId + " was not found"));
     }
 
+    // Get
     @Transactional(readOnly = true)
     public CustomerData getCustomer(Long customerId) {
         Customer customer = findCustomerById(customerId);
         return dataFactory.convertToCustomerData(customer);
     }
 
+    // Get all
+    @Transactional
+    public List<CustomerData> getAllCustomers() {
+        return customerDao.findAll().stream().map(c -> dataFactory.convertToCustomerData(c)).toList();
+    }
+
+    // Delete
     @Transactional
     public void deleteCustomer(Long customerId) {
         Customer customer = findCustomerById(customerId);
@@ -87,10 +98,6 @@ public class CustomerService {
         customer.getBarberShops().clear();
 
         customerDao.delete(customer);
-    }
-
-    public List<CustomerData> getAllCustomers() {
-        return customerDao.findAll().stream().map(c -> dataFactory.convertToCustomerData(c)).toList();
     }
 }
 

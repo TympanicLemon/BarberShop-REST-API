@@ -17,6 +17,7 @@ public class CustomerController {
   @Autowired
   private CustomerService customerService;
 
+  // Create
   @PostMapping("/{barberShopId}")
   @ResponseStatus(code = HttpStatus.CREATED)
   public CustomerData createCustomer(@RequestBody CustomerData customerData, @PathVariable Long barberShopId) {
@@ -24,18 +25,7 @@ public class CustomerController {
     return customerService.createCustomer(barberShopId, customerData);
   }
 
-  @GetMapping("/{customerId}")
-  public CustomerData getCustomer(@PathVariable Long customerId) {
-    log.info("Retrieving customer with customer ID={}", customerId);
-    return customerService.getCustomer(customerId);
-  }
-
-  @GetMapping
-  public List<CustomerData> getAllCustomers() {
-    log.info("Retrieving all customers from all stores");
-    return customerService.getAllCustomers();
-  }
-
+  // Update
   @PutMapping("/{customerId}")
   public CustomerData updateCustomer(@RequestBody CustomerData customerData, @PathVariable Long customerId) {
     customerData.setCustomerId(customerId);
@@ -43,6 +33,21 @@ public class CustomerController {
     return customerService.updateCustomer(customerId, customerData);
   }
 
+  // Get
+  @GetMapping("/{customerId}")
+  public CustomerData getCustomer(@PathVariable Long customerId) {
+    log.info("Retrieving customer with customer ID={}", customerId);
+    return customerService.getCustomer(customerId);
+  }
+
+  // Get all
+  @GetMapping
+  public List<CustomerData> getAllCustomers() {
+    log.info("Retrieving all customers from all stores");
+    return customerService.getAllCustomers();
+  }
+
+  // Delete
   @DeleteMapping("{customerId}")
   public Map<String, String> deleteCustomer(@PathVariable Long customerId) {
     log.info("Deleting customer with ID={}", customerId);

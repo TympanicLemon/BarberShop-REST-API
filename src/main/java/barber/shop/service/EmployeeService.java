@@ -15,28 +15,31 @@ import java.util.Optional;
 
 @Service
 public class EmployeeService {
-
   @Autowired
   private EmployeeDao employeeDao;
 
   @Autowired
   private BarberShopDao barberShopDao;
 
+  @Autowired
+  private DataFactory dataFactory;
+
+  // Create
   @Transactional
   public EmployeeData createEmployee(Long barberShopId, EmployeeData employeeData) {
-    Optional<Employee> optEmp = employeeDao.findByEmail(employeeData.getEmail());
-    if (optEmp.isPresent()) {
+    employeeDao.findByEmail(employeeData.getEmail()).ifPresent(c -> {
       throw new DuplicateKeyException("Employee with email " + employeeData.getEmail() + " already exists");
-    }
+    });
 
     BarberShop barberShop = findBarberShopById(barberShopId);
-    Employee employee = employeeData.toEmployee();
+    Employee employee = dataFactory.converToEmployee(employeeData);
     barberShop.getEmployees().add(employee);
     employee.setBarberShop(barberShop);
 
-    return new EmployeeData(employeeDao.save(employee));
+    return dataFactory.convertToEmployeeData(employeeDao.save(employee));
   }
 
+  // Update
   @Transactional
   public EmployeeData updateEmployee(Long employeeId, EmployeeData employeeData) {
     Employee employee = findEmployeeById(employeeId);
@@ -48,11 +51,11 @@ public class EmployeeService {
       }
     }
 
-    setFieldsInEmployee(employee, employeeData);
-    return new EmployeeData(employeeDao.save(employee));
+    updateEmployeeDataFields(employee, employeeData);
+    return dataFactory.convertToEmployeeData(employee);
   }
 
-  private void setFieldsInEmployee(Employee employee, EmployeeData employeeData) {
+  private void updateEmployeeDataFields(Employee employee, EmployeeData employeeData) {
     employee.setFirstName(employeeData.getFirstName());
     employee.setLastName(employeeData.getLastName());
     employee.setEmail(employeeData.getEmail());
@@ -69,11 +72,14 @@ public class EmployeeService {
       "Barbershop with ID=" + barberShopId + " was not found"));
   }
 
+  // Get
   @Transactional(readOnly = true)
   public EmployeeData getEmployee(Long employeeId) {
-    return new EmployeeData(findEmployeeById(employeeId));
+    Employee employee = findEmployeeById(employeeId);
+    return dataFactory.convertToEmployeeData(employee);
   }
 
+  // Delete
   @Transactional
   public void deleteEmployee(Long employeeId) {
     Employee employee = findEmployeeById(employeeId);
