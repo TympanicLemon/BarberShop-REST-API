@@ -6,6 +6,7 @@ import barber.shop.controller.model.EmployeeData;
 import barber.shop.dao.BarberShopDao;
 import barber.shop.entity.BarberShop;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,17 +18,27 @@ import java.util.stream.Collectors;
 public class BarberShopService {
   @Autowired
   private BarberShopDao barberShopDao;
+
   @Autowired
   private DataFactory dataFactory;
 
+  // Create
   @Transactional
-  public BarberShopData saveBarberShop(BarberShopData barberShopData) {
+  public BarberShopData createBarberShop(BarberShopData barberShopData) {
     Long barberShopId = barberShopData.getBarberShopId();
-    BarberShop barberShop = findOrCreateBarberShop(barberShopId);
+    if(!Objects.isNull(barberShopId))
+        throw new DuplicateKeyException("Barbershop with ID=" + barberShopId + " already exists");
 
+    BarberShop barberShop = dataFactory.convertToBarberShop(barberShopData);
+    return dataFactory.convertToBarberShopData(barberShopDao.save(barberShop));
+  }
+
+  // Update
+  @Transactional
+  public BarberShopData updateBarberShop(Long barberShopId, BarberShopData barberShopData) {
+    BarberShop barberShop = findBarberShopById(barberShopId);
     updateBarberShopDataFields(barberShop, barberShopData);
-
-    return dataFactory.createBarberShopData(barberShop);
+    return dataFactory.convertToBarberShopData(barberShopDao.save(barberShop));
   }
 
   private void updateBarberShopDataFields(BarberShop barberShop, BarberShopData barberShopData) {
@@ -39,48 +50,43 @@ public class BarberShopService {
     barberShop.setPhoneNumber(barberShopData.getPhoneNumber());
   }
 
-  private BarberShop findOrCreateBarberShop(Long barberShopId) {
-    BarberShop barberShop;
-
-    if (Objects.isNull(barberShopId))
-      barberShop = new BarberShop();
-    else
-      barberShop = findBarberShopById(barberShopId);
-
-    return barberShop;
-  }
 
   private BarberShop findBarberShopById(Long barberShopId) {
-    return barberShopDao.findById(barberShopId).orElseThrow(() -> new NoSuchElementException(
-            "Barbershop with ID=" + barberShopId + " was not found"));
+    return barberShopDao.findById(barberShopId).orElseThrow(
+            () -> new NoSuchElementException("Barbershop with ID=" + barberShopId + " was not found"));
   }
 
-  @Transactional(readOnly = true)
-  public List<BarberShopData> getAllBarberShops() {
-    return barberShopDao.findAll().stream().map(dataFactory::createBarberShopData).collect(Collectors.toList());
-  }
-
+  // Get
   @Transactional(readOnly = true)
   public BarberShopData getBarberShopById(Long barberShopId) {
     BarberShop barberShop = findBarberShopById(barberShopId);
-    return dataFactory.createBarberShopData(barberShop);
+    return dataFactory.convertToBarberShopData(barberShop);
   }
 
+  // Get all
+  @Transactional(readOnly = true)
+  public List<BarberShopData> getAllBarberShops() {
+    return barberShopDao.findAll().stream().map(dataFactory::convertToBarberShopData).collect(Collectors.toList());
+  }
+
+  // Get all employees
+  @Transactional
+  public List<EmployeeData> getAllEmployeesByShopId(Long barberShopId) {
+    BarberShop barberShop = findBarberShopById(barberShopId);
+    return barberShop.getEmployees().stream().map(dataFactory::convertToEmployeeData).collect(Collectors.toList());
+  }
+
+  // Get all customers
+  @Transactional
+  public List<CustomerData> getAllCustomersByShopId(Long barberShopId) {
+    BarberShop barberShop = findBarberShopById(barberShopId);
+    return barberShop.getCustomers().stream().map(dataFactory::convertToCustomerData).collect(Collectors.toList());
+  }
+
+  // Delete
   @Transactional
   public void deleteBarberShopById(Long barberShopId) {
     BarberShop barberShop = findBarberShopById(barberShopId);
     barberShopDao.delete(barberShop);
-  }
-
-  @Transactional
-  public List<CustomerData> getAllCustomersByShopId(Long barberShopId) {
-    BarberShop barberShop = findBarberShopById(barberShopId);
-    return barberShop.getCustomers().stream().map(dataFactory::createCustomerData).collect(Collectors.toList());
-  }
-
-  @Transactional
-  public List<EmployeeData> getAllEmployeesByShopId(Long barberShopId) {
-    BarberShop barberShop = findBarberShopById(barberShopId);
-    return barberShop.getEmployees().stream().map(dataFactory::createEmployeeData).collect(Collectors.toList());
   }
 }
