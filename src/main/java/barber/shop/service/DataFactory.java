@@ -9,14 +9,28 @@ import barber.shop.entity.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class DataFactory {
+    public BarberShopData convertToBarberShopData(BarberShop barberShop) {
+        if (Objects.isNull(barberShop))
+            throw new IllegalArgumentException("BarberShop object you are trying to convert is null.");
 
-    public EmployeeData createEmployeeData(Employee employee) {
-        if(Objects.isNull(employee))
+        BarberShopData barberShopData = new BarberShopData();
+
+        barberShopData.setBarberShopId(barberShop.getBarberShopId());
+        barberShopData.setName(barberShop.getName());
+        barberShopData.setAddress(barberShop.getAddress());
+        barberShopData.setCity(barberShop.getCity());
+        barberShopData.setState(barberShop.getState());
+        barberShopData.setZip(barberShop.getZip());
+        barberShopData.setPhoneNumber(barberShop.getPhoneNumber());
+
+        return barberShopData;
+    }
+
+    public EmployeeData convertToEmployeeData(Employee employee) {
+        if (Objects.isNull(employee))
             throw new IllegalArgumentException("Employee object you are trying to convert is null.");
 
         EmployeeData employeeData = new EmployeeData();
@@ -30,8 +44,8 @@ public class DataFactory {
         return employeeData;
     }
 
-    public CustomerData createCustomerData(Customer customer) {
-        if(Objects.isNull(customer))
+    public CustomerData convertToCustomerData(Customer customer) {
+        if (Objects.isNull(customer))
             throw new IllegalArgumentException("Customer object you are trying to convert is null.");
 
         CustomerData customerData = new CustomerData();
@@ -44,28 +58,49 @@ public class DataFactory {
         return customerData;
     }
 
-    public BarberShopData createBarberShopData(BarberShop barberShop) {
-        if(Objects.isNull(barberShop))
+
+    public BarberShop convertToBarberShop(BarberShopData barberShopData) {
+        if (Objects.isNull(barberShopData))
             throw new IllegalArgumentException("BarberShop object you are trying to convert is null.");
 
-        BarberShopData barberShopData = new BarberShopData();
+        BarberShop barberShop = new BarberShop();
 
-        barberShopData.setBarberShopId(barberShop.getBarberShopId());
-        barberShopData.setName(barberShop.getName());
-        barberShopData.setAddress(barberShop.getAddress());
-        barberShopData.setCity(barberShop.getCity());
-        barberShopData.setState(barberShop.getState());
-        barberShopData.setZip(barberShop.getZip());
-        barberShopData.setPhoneNumber(barberShop.getPhoneNumber());
+        barberShop.setBarberShopId(barberShopData.getBarberShopId());
+        barberShop.setName(barberShopData.getName());
+        barberShop.setAddress(barberShop.getAddress());
+        barberShop.setCity(barberShopData.getCity());
+        barberShop.setState(barberShopData.getState());
+        barberShop.setZip(barberShopData.getZip());
+        barberShop.setPhoneNumber(barberShopData.getPhoneNumber());
 
-        Set<EmployeeData> employeeDataSet = barberShop.getEmployees().stream()
-                .map(this::createEmployeeData).collect(Collectors.toSet());
-        barberShopData.setEmployees(employeeDataSet);
+        return barberShop;
+    }
 
-        Set<CustomerData> customerDataSet = barberShop.getCustomers().stream()
-                .map(this::createCustomerData).collect(Collectors.toSet());
-        barberShopData.setCustomers(customerDataSet);
+    public Employee converToEmployee(EmployeeData employeeData) {
+        if (Objects.isNull(employeeData))
+            throw new IllegalArgumentException("EmployeeData object you are trying to convert is null.");
 
-        return barberShopData;
+        Employee employee = new Employee();
+
+        employee.setEmployeeId(employeeData.getEmployeeId());
+        employee.setFirstName(employeeData.getFirstName());
+        employee.setLastName(employeeData.getLastName());
+        employee.setEmail(employee.getEmail());
+
+        return employee;
+    }
+
+    public Customer convertToCustomer(CustomerData customerData) {
+        if (Objects.isNull(customerData))
+            throw new IllegalArgumentException("CustomerData object you are trying to convert is null.");
+
+        Customer customer = new Customer();
+
+        customer.setCustomerId(customerData.getCustomerId());
+        customer.setEmail(customerData.getEmail());
+        customer.setFirstName(customerData.getFirstName());
+        customer.setLastName(customerData.getLastName());
+
+        return customer;
     }
 }
