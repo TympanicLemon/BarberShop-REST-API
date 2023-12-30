@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/customer")
@@ -42,9 +43,9 @@ public class CustomerController {
 
   // Get all
   @GetMapping
-  public List<CustomerData> getAllCustomers() {
-    log.info("Retrieving all customers from all stores");
-    return customerService.getAllCustomers();
+  public Set<CustomerData> getAllCustomersByShopId(@PathVariable Long barberShopId) {
+    log.info("Retrieving all customers from barbershop with ID={}", barberShopId);
+    return customerService.getAllCustomersByShopId(barberShopId);
   }
 
   // Delete

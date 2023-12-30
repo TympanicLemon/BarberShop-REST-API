@@ -10,9 +10,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -83,8 +82,10 @@ public class CustomerService {
 
     // Get all
     @Transactional
-    public List<CustomerData> getAllCustomers() {
-        return customerDao.findAll().stream().map(c -> dataFactory.convertToCustomerData(c)).toList();
+    public Set<CustomerData> getAllCustomersByShopId(Long barberShopId) {
+        BarberShop barberShop = findBarberShopById(barberShopId);
+
+        return barberShop.getCustomers().stream().map(dataFactory::convertToCustomerData).collect(Collectors.toSet());
     }
 
     // Delete

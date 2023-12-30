@@ -10,8 +10,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -87,5 +89,10 @@ public class EmployeeService {
 
     barberShop.getEmployees().remove(employee);
     employeeDao.delete(employee);
+  }
+
+  public List<EmployeeData> getAllEmployeesByShopId(Long barberShopId) {
+    BarberShop barberShop = findBarberShopById(barberShopId);
+    return barberShop.getEmployees().stream().map(dataFactory::convertToEmployeeData).collect(Collectors.toList());
   }
 }

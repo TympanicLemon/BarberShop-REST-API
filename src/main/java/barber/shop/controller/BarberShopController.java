@@ -1,8 +1,6 @@
 package barber.shop.controller;
 
 import barber.shop.controller.model.BarberShopData;
-import barber.shop.controller.model.CustomerData;
-import barber.shop.controller.model.EmployeeData;
 import barber.shop.service.BarberShopService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,7 @@ public class BarberShopController {
   // Create
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public BarberShopData insertBarberShop(@RequestBody BarberShopData barberShopData) {
+  public BarberShopData createBarberShop(@RequestBody BarberShopData barberShopData) {
     log.info("Creating barber shop {}", barberShopData);
     return barberShopService.createBarberShop(barberShopData);
   }
@@ -37,38 +35,23 @@ public class BarberShopController {
 
   // Get
   @GetMapping("/{barberShopId}")
-  public BarberShopData retrieveBarberShopById(@PathVariable Long barberShopId) {
+  public BarberShopData getBarberShop(@PathVariable Long barberShopId) {
     log.info("Retrieving barbershop with ID={}", barberShopId);
-    return barberShopService.getBarberShopById(barberShopId);
+    return barberShopService.getBarberShop(barberShopId);
   }
 
   // Get all
   @GetMapping
-  public List<BarberShopData> retrieveAllBarberShops() {
+  public List<BarberShopData> getAllBarberShops() {
     log.info("Retrieving all available barber shops.");
     return barberShopService.getAllBarberShops();
   }
 
-  // Get all employees for a particular store
-  @GetMapping("/{barberShopId}/employees")
-  public List<EmployeeData> getAllEmployeesByShopId(@PathVariable Long barberShopId) {
-    log.info("Fetching all employees in barber shop with ID={}", barberShopId);
-    return barberShopService.getAllEmployeesByShopId(barberShopId);
-  }
-
-  // Get all customers for a particular store
-  @GetMapping("/{barberShopId}/customers")
-  public List<CustomerData> retrieveCustomersByShopId(@PathVariable Long barberShopId) {
-    log.info("Retrieving all customers in barber shop with ID={}", barberShopId);
-    return barberShopService.getAllCustomersByShopId(barberShopId);
-  }
-
   // Delete
   @DeleteMapping("/{barberShopId}")
-  public Map<String, String> deleteBarberShopById(@PathVariable Long barberShopId) {
+  public Map<String, String> deleteBarberShop(@PathVariable Long barberShopId) {
     log.info("Deleting barbershop with ID={}", barberShopId);
-    barberShopService.deleteBarberShopById(barberShopId);
-
+    barberShopService.deleteBarberShop(barberShopId);
     return Map.of("message", "Deletion of barber shop with ID+" + barberShopId + " was successful");
   }
 }

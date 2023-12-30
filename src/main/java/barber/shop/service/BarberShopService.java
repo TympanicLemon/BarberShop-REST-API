@@ -58,7 +58,7 @@ public class BarberShopService {
 
   // Get
   @Transactional(readOnly = true)
-  public BarberShopData getBarberShopById(Long barberShopId) {
+  public BarberShopData getBarberShop(Long barberShopId) {
     BarberShop barberShop = findBarberShopById(barberShopId);
     return dataFactory.convertToBarberShopData(barberShop);
   }
@@ -85,7 +85,7 @@ public class BarberShopService {
 
   // Delete
   @Transactional
-  public void deleteBarberShopById(Long barberShopId) {
+  public void deleteBarberShop(Long barberShopId) {
     BarberShop barberShop = findBarberShopById(barberShopId);
     barberShopDao.delete(barberShop);
   }

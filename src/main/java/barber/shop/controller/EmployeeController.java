@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,7 +17,7 @@ public class EmployeeController {
   @Autowired
   private EmployeeService employeeService;
 
-  // Create an Employee
+  // Create
   @PostMapping("/{barberShopId}")
   public EmployeeData createEmployee(@PathVariable Long barberShopId,
                                      @RequestBody EmployeeData employeeData) {
@@ -24,21 +25,28 @@ public class EmployeeController {
     return employeeService.createEmployee(barberShopId, employeeData);
   }
 
-  // Update an Employee
+  // Update
   @PutMapping("/{employeeId}")
   public EmployeeData updateEmployee(@PathVariable Long employeeId, @RequestBody EmployeeData employeeData) {
     log.info("Updating employee {} with ID={}", employeeData, employeeId);
     return employeeService.updateEmployee(employeeId, employeeData);
   }
 
-  // Get an Employee by ID within a Barber Shop
+  // Get
   @GetMapping("/{employeeId}")
   public EmployeeData getEmployee(@PathVariable Long employeeId) {
     log.info("Fetching employee with ID={}", employeeId);
     return employeeService.getEmployee(employeeId);
   }
 
-  // Delete an Employee by ID from a specific Barber Shop
+  // Get all
+  @GetMapping("/{barberShopId}/employees")
+  public List<EmployeeData> getAllEmployeesByShopId(@PathVariable Long barberShopId) {
+    log.info("Fetching all employees in barber shop with ID={}", barberShopId);
+    return employeeService.getAllEmployeesByShopId(barberShopId);
+  }
+
+  // Delete
   @DeleteMapping("/{employeeId}")
   public Map<String, String> deleteEmployee(@PathVariable Long employeeId) {
     log.info("Deleting employee with ID={}", employeeId);
