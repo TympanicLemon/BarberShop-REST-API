@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 @Service
 public class BarberShopService {
@@ -50,7 +51,6 @@ public class BarberShopService {
     barberShop.setPhoneNumber(barberShopData.getPhoneNumber());
   }
 
-
   private BarberShop findBarberShopById(Long barberShopId) {
     return barberShopDao.findById(barberShopId).orElseThrow(
             () -> new NoSuchElementException("Barbershop with ID=" + barberShopId + " was not found"));
@@ -65,22 +65,8 @@ public class BarberShopService {
 
   // Get all
   @Transactional(readOnly = true)
-  public List<BarberShopData> getAllBarberShops() {
-    return barberShopDao.findAll().stream().map(dataFactory::convertToBarberShopData).collect(Collectors.toList());
-  }
-
-  // Get all employees
-  @Transactional
-  public List<EmployeeData> getAllEmployeesByShopId(Long barberShopId) {
-    BarberShop barberShop = findBarberShopById(barberShopId);
-    return barberShop.getEmployees().stream().map(dataFactory::convertToEmployeeData).collect(Collectors.toList());
-  }
-
-  // Get all customers
-  @Transactional
-  public List<CustomerData> getAllCustomersByShopId(Long barberShopId) {
-    BarberShop barberShop = findBarberShopById(barberShopId);
-    return barberShop.getCustomers().stream().map(dataFactory::convertToCustomerData).collect(Collectors.toList());
+  public Set<BarberShopData> getAllBarberShops() {
+    return barberShopDao.findAll().stream().map(dataFactory::convertToBarberShopData).collect(Collectors.toSet());
   }
 
   // Delete

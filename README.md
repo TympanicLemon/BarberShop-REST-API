@@ -62,7 +62,8 @@ The **Barbershop Management System** provides a robust solution for managing mul
 
 🎯 Stretch Goals
 - [x] Redo README
-- [ ] Rewrite API structure, should be easier to read will follow microsoft convention for a REST API
+- [x] Refactor controllers to standardize method name standards, and enforce single responsibility principle through removal of methods where appropriate.
+- [ ] Rewrite API structure to enhance readability, standardize structure across all controllers and enable easy addition of future features
 - [ ] TBD...
 
 

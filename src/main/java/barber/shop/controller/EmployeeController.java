@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/employee")
@@ -41,7 +42,7 @@ public class EmployeeController {
 
   // Get all
   @GetMapping("/{barberShopId}/employees")
-  public List<EmployeeData> getAllEmployeesByShopId(@PathVariable Long barberShopId) {
+  public Set<EmployeeData> getAllEmployeesByShopId(@PathVariable Long barberShopId) {
     log.info("Fetching all employees in barber shop with ID={}", barberShopId);
     return employeeService.getAllEmployeesByShopId(barberShopId);
   }

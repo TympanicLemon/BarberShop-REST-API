@@ -42,7 +42,7 @@ public class DataFactory {
         employeeData.setPhoneNumber(employee.getPhoneNumber());
 
         return employeeData;
-    }
+   }
 
     public CustomerData convertToCustomerData(Customer customer) {
         if (Objects.isNull(customer))

@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/barber_shop")
@@ -42,7 +42,7 @@ public class BarberShopController {
 
   // Get all
   @GetMapping
-  public List<BarberShopData> getAllBarberShops() {
+  public Set<BarberShopData> getAllBarberShops() {
     log.info("Retrieving all available barber shops.");
     return barberShopService.getAllBarberShops();
   }

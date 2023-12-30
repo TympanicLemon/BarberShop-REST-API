@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,8 +92,8 @@ public class EmployeeService {
     employeeDao.delete(employee);
   }
 
-  public List<EmployeeData> getAllEmployeesByShopId(Long barberShopId) {
+  public Set<EmployeeData> getAllEmployeesByShopId(Long barberShopId) {
     BarberShop barberShop = findBarberShopById(barberShopId);
-    return barberShop.getEmployees().stream().map(dataFactory::convertToEmployeeData).collect(Collectors.toList());
+    return barberShop.getEmployees().stream().map(dataFactory::convertToEmployeeData).collect(Collectors.toSet());
   }
 }
